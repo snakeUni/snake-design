@@ -88,5 +88,11 @@ export default [
     name: 'Spin 文字提示',
     path: '/app/basic/spin',
     component: require('../components/Spin').default
+  },
+  {
+    key: 'table',
+    name: 'Table 文字提示',
+    path: '/app/basic/table',
+    component: require('../components/Table').default
   }
 ]
