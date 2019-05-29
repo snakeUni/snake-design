@@ -4,25 +4,31 @@ import TableHead from './tableHead'
 import TableCol from './colGroup'
 import TableBody from './tableBody'
 
+import './index.scss'
+
 const prefixCls = 'snake-table'
 
 export default function Table<T>({
   dataSource = [],
   columns = [],
   rowKey,
-  rowClassName
+  rowClassName,
+  ...rest
 }: TableProps<T>) {
   const getTableColProps = () => {
     return {
       prefixCls,
-      columns
+      columns,
+      ...rest
     }
   }
 
   const getTableHeadProps = () => {
     return {
       prefixCls,
-      columns
+      columns,
+      dataSource,
+      ...rest
     }
   }
 
@@ -32,7 +38,8 @@ export default function Table<T>({
       columns,
       dataSource,
       rowKey,
-      rowClassName
+      rowClassName,
+      ...rest
     }
   }
 

@@ -74,7 +74,7 @@ function CheckboxItem(checkboxItemProps: CheckboxItemProps, ref: any) {
         />
         <span className={`${prefixCls}-select-inner`} />
       </span>
-      <span className={`${prefixCls}-label`}>{children}</span>
+      {children ? <span className={`${prefixCls}-label`}>{children}</span> : null}
     </label>
   )
 }

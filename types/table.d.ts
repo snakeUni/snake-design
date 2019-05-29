@@ -10,19 +10,24 @@ export interface TableBodyProps<T> {
   prefixCls?: string
   columns?: Column<T>[]
   dataSource?: T[]
-  rowKey?: (record: T) => string
+  rowKey?: (record: T) => string | number
   className?: string
   rowClassName?: (record: T, index: number) => string
+  rowSelection?: RowSelection<T>
 }
 
 export interface TableHeadProps<T> {
   columns?: Column<T>[]
   prefixCls?: string
+  rowSelection?: RowSelection<T>
+  dataSource?: T[]
+  rowKey?: (record: T) => string | number
 }
 
 export interface ColGroupProps<T> {
   columns: Column<T>[]
   prefixCls?: string
+  rowSelection?: RowSelection<T>
 }
 
 export interface TableRowProps<T> {
@@ -30,6 +35,10 @@ export interface TableRowProps<T> {
   columns: Column<T>[]
   prefixCls?: string
   className?: string
+  rowSelection?: RowSelection<T>
+  rowKey?: (record: T) => string | number
+  index: number
+  dataSource: T[]
 }
 
 export interface TablePaginationProps {}
@@ -56,7 +65,7 @@ export interface TableProps<T> {
   // rowClassName 表格行的类名
   rowClassName?: (record: T, index: number) => string
   // rowKey 行的key，最好传递，防止某些隐藏的问题，数据错位之类的
-  rowKey?: (record: T) => string
+  rowKey?: (record: T) => string | number
   // rowSelection 配合带有复选框操作的table使用
   rowSelection?: RowSelection<T>
   // scroll 设置横向或纵向滚动，也可用于指定滚动区域的宽和高
@@ -99,10 +108,10 @@ export interface Column<T> {
   render?: (record: T, text?: string, index?: number) => React.ReactNode
   // width 列宽度
   width?: number | string
-  // sortOrder 排序顺序 默认为false的时候采用默认排序
+  // sortOrder 主控控制排序顺序, 也可以当做默认排序
   sortOrder?: SortType | false
   // sorter 排序函数，本地排序需要传递一个函数，需要服务端排序则设置为true即可
-  sorter?: (a: T, b: T) => boolean
+  sorter?: (a: T, b: T) => boolean | boolean
   // 合并单元格 index为每一行的下标,
   onMergeCell?: (index: number) => MergeCell
 }

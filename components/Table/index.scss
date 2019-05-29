@@ -1,0 +1,24 @@
+@import '../styles/themes/default';
+
+$table: 'snake-table';
+
+.#{$table} {
+  border-collapse: collapse;
+  width: 100%;
+
+  &-thead-column,
+  &-row-column {
+    padding: 16px;
+    text-align: left;
+    border-bottom: 1px solid #f3f7fa;
+  }
+
+  &-row-column {
+    color: #5e6d82;
+  }
+
+  &-thead-column {
+    background-color: #fafbfc;
+    color: rgba(0, 0, 0, 0.85);
+  }
+}

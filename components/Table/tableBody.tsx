@@ -11,7 +11,8 @@ export default function TableBody<T>({
   prefixCls = 'snake-table',
   columns,
   className,
-  rowClassName
+  rowClassName,
+  rowSelection
 }: TableBodyProps<T>) {
   const getKey = (data, index) => {
     if (rowKey) {
@@ -30,6 +31,8 @@ export default function TableBody<T>({
     }
   }
 
+  const getDataSourceBySortAnFilter = () => {}
+
   return (
     <tbody className={getClassStr()}>
       {dataSource.map((data, index) => {
@@ -40,6 +43,10 @@ export default function TableBody<T>({
             data={data}
             key={key}
             className={getRowClassName(data, index)}
+            rowSelection={rowSelection}
+            index={index}
+            dataSource={dataSource}
+            rowKey={rowKey}
           />
         )
       })}
