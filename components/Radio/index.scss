@@ -173,6 +173,7 @@ $radio: 'snake-radio';
         background-color: #fff;
         transition: all 0.3s;
         border-collapse: separate;
+        box-sizing: border-box;
 
         &::after {
           position: absolute;

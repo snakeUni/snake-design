@@ -4,6 +4,12 @@ imports:
   import SimpleDemo from './simpleTable.tsx';
   import SelectDemoCode from '!raw-loader!./rowSelection.tsx';
   import SelectDemo from './rowSelection.tsx';
+  import SorterDemoCode from '!raw-loader!./sortFilter.tsx';
+  import SorterDemo from './sortFilter.tsx';
+  import FixedHeaderDemoCode from '!raw-loader!./fixedHeader.tsx';
+  import FixedHeaderDemo from './fixedHeader.tsx';
+  import FixedColumnDemoCode from '!raw-loader!./fixedColumn.tsx';
+  import FixedColumnDemo from './fixedColumn.tsx';
 ---
 
 # Table 表格
@@ -21,7 +27,31 @@ imports:
 ## 选择操作
 
 :::demo
-<Block des="简单的 table" code={SelectDemoCode}>
+<Block des="选择操作" code={SelectDemoCode}>
   <SelectDemo />
+</Block>
+:::
+
+## 筛选和排序
+
+:::demo
+<Block des="筛选和排序" code={SorterDemoCode}>
+  <SorterDemo />
+</Block>
+:::
+
+## 固定表头
+
+:::demo
+<Block des="筛选和排序" code={FixedHeaderDemoCode}>
+  <FixedHeaderDemo />
+</Block>
+:::
+
+## 固定列
+
+:::demo
+<Block des="筛选和排序" code={FixedColumnDemoCode}>
+  <FixedColumnDemo />
 </Block>
 :::

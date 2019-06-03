@@ -22,7 +22,7 @@ export default function TableBody<T>({
   }
 
   const getClassStr = useCallback(() => {
-    return cx(`${prefixCls}-tableBody`, className)
+    return cx(`${prefixCls}-body`, className)
   }, [prefixCls, className])
 
   const getRowClassName = (data: T, index: number) => {
@@ -30,8 +30,6 @@ export default function TableBody<T>({
       return rowClassName(data, index)
     }
   }
-
-  const getDataSourceBySortAnFilter = () => {}
 
   return (
     <tbody className={getClassStr()}>

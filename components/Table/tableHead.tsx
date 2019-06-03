@@ -10,7 +10,8 @@ export default function TableHead<T>({
   prefixCls = 'snake-table',
   rowSelection,
   dataSource,
-  rowKey
+  rowKey,
+  ...rest
 }: TableHeadProps<T>) {
   const getSelectedKey = (data, index) => {
     if (rowKey) {
@@ -76,7 +77,13 @@ export default function TableHead<T>({
         {renderRowSelection()}
         {columns.map(column => {
           return (
-            <TableCell tag="th" key={column.key} column={column} prefixCls={`${prefixCls}-thead`}>
+            <TableCell
+              tag="th"
+              key={column.key}
+              column={column}
+              prefixCls={`${prefixCls}-thead`}
+              {...rest}
+            >
               {column.title}
             </TableCell>
           )

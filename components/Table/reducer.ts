@@ -1,36 +1,40 @@
-import { Column } from 'types/table'
+import { Column, Action } from 'types/table'
 
-interface State<T> {
-  sortColumn: Column<T>
-  filterColumn: Column<T>
-  filters: Column<T>[]
+export interface State<T> {
+  sortColumn: Column<T> | null
+  filterColumn: Column<T> | null
+  filters: Filters
+  sortOrder: string
 }
 
-type ActionType = 'UPDATE_SORT_COLUMN' | 'UPDATE_FILTER_COLUMN' | 'UPDATE_FILTERS'
-
-interface Action {
-  type: ActionType
-  payload: any
+export interface Filters {
+  [key: string]: (string | number)[]
 }
 
-export default function reducer<T>(state: State<T>, action: Action) {
+export default function reducer<T>(state: State<T>, action: Action<T>): State<T> {
   switch (action.type) {
     case 'UPDATE_FILTERS': {
       return {
         ...state,
-        filters: action.payload
+        filters: action.payload as Filters
       }
     }
     case 'UPDATE_FILTER_COLUMN': {
       return {
         ...state,
-        filterColumn: action.payload
+        filterColumn: action.payload as Column<T>
       }
     }
     case 'UPDATE_SORT_COLUMN': {
       return {
         ...state,
-        sortColumn: action.payload
+        sortColumn: action.payload as Column<T>
+      }
+    }
+    case 'UPDATE_SORT_ORDER': {
+      return {
+        ...state,
+        sortOrder: action.payload as string
       }
     }
     default: {

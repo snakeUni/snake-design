@@ -1,9 +1,23 @@
+type ActionType =
+  | 'UPDATE_SORT_COLUMN'
+  | 'UPDATE_FILTER_COLUMN'
+  | 'UPDATE_FILTERS'
+  | 'UPDATE_SORT_ORDER'
+
+export interface Action<T> {
+  type: ActionType
+  payload: Column<T> | object | string
+}
+
 export interface TableCellProps<T> {
   tag?: 'th' | 'td'
   children?: React.ReactNode
   className?: string
   column?: Column<T>
   prefixCls?: string
+  filters?: object
+  dispatch?: React.Dispatch<Action<T>>
+  sortOrder?: string
 }
 
 export interface TableBodyProps<T> {
@@ -22,6 +36,9 @@ export interface TableHeadProps<T> {
   rowSelection?: RowSelection<T>
   dataSource?: T[]
   rowKey?: (record: T) => string | number
+  filters?: object
+  dispatch?: React.Dispatch<Action<T>>
+  sortOrder?: string
 }
 
 export interface ColGroupProps<T> {
@@ -102,6 +119,8 @@ export interface Column<T> {
   filterMultiple?: boolean
   // onFilter 本地的筛选函数，服务端进行筛选的时候，可以不加这个函数, value为选中的value的数组
   onFilter?: (value: Array<string | number>, record: T) => boolean
+  // 自定义的 dropdown 区域, 可自定定义相关交互
+  filterDropdown?: React.ReactNode
   // fixed 是否固定 固定在左边或者右边
   fixed?: Fixed
   // render 用于复杂数据的渲染 record: 当前行的dataSource的数据, text: 当前Data的value, index: 当前行的下标
@@ -111,7 +130,7 @@ export interface Column<T> {
   // sortOrder 主控控制排序顺序, 也可以当做默认排序
   sortOrder?: SortType | false
   // sorter 排序函数，本地排序需要传递一个函数，需要服务端排序则设置为true即可
-  sorter?: (a: T, b: T) => boolean | boolean
+  sorter?: (a: T, b: T) => number
   // 合并单元格 index为每一行的下标,
   onMergeCell?: (index: number) => MergeCell
 }

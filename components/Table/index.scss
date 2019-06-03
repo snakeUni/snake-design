@@ -3,8 +3,12 @@
 $table: 'snake-table';
 
 .#{$table} {
-  border-collapse: collapse;
-  width: 100%;
+  box-sizing: border-box;
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
 
   &-thead-column,
   &-row-column {
@@ -20,5 +24,117 @@ $table: 'snake-table';
   &-thead-column {
     background-color: #fafbfc;
     color: rgba(0, 0, 0, 0.85);
+
+    &-has-sorters {
+      cursor: pointer;
+
+      &:hover {
+        background: #f2f2f2;
+      }
+    }
+
+    &-head {
+      display: flex;
+      align-items: center;
+    }
+
+    &-sorter {
+      height: 1em;
+      line-height: 1em;
+      text-align: center;
+      margin-top: -0.20em;
+      margin-left: 0.5em;
+      color: #bfbfbf;
+
+      &-item {
+        line-height: 0.5em;
+        height: 0.5em;
+      }
+
+      .snake-icon {
+        font-size: 12px;
+      }
+    }
+
+    &-filter {
+      display: flex;
+      align-items: center;
+      color: #bfbfbf;
+
+      .snake-icon {
+        font-size: 16px;
+      }
+    }
   }
+
+  // 滚动模块
+  &-scroll {
+    overflow-x: scroll;
+
+    table {
+      width: auto;
+      min-width: 100%;
+    }
+
+    &-body {
+      overflow: auto;
+    }
+
+    &-left {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: auto;
+      overflow: hidden;
+
+      table {
+        background: #fff;
+      }
+    }
+
+    &-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+      z-index: auto;
+      overflow: hidden;
+
+      table {
+        background: #fff;
+      }
+    }
+  }
+
+  &-content {
+    overflow: auto;
+    overflow-x: hidden;
+    position: relative;
+  }
+}
+
+.snake-table-thead-column-dropdown-menu {
+  margin: 0;
+  padding: 0;
+}
+
+.snake-table-thead-column-dropdown-item {
+  list-style: none;
+  padding: 5px 12px;
+  color: rgba(0, 0, 0, 0.65);
+  white-space: nowrap;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.snake-table-thead-column-filter-option {
+  display: flex;
+  padding: 7px 8px 3px 8px;
+  overflow: hidden;
+  border-top: 1px solid #e8e8e8;
+}
+
+.snake-table-thead-btn {
+  flex: 1;
+  color: $brand;
+  text-align: center;
 }

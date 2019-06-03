@@ -8,12 +8,17 @@ const columns = [
   },
   {
     key: 'age',
-    title: '年龄'
+    title: '年龄',
+    sorter: (a, b) => a.age - b.age,
+    filters: [{ label: '18岁', value: 18 }, { label: '28岁', value: 28 }],
+    onFilter: (value: Array<string | number>, record) => {
+      console.log(value, record)
+      return value.includes(record.age)
+    }
   },
   {
     key: 'address',
-    title: '地址',
-    render: record => <a>{record.address}</a>
+    title: '地址'
   }
 ]
 
@@ -35,6 +40,6 @@ const dataSource = [
   }
 ]
 
-export default function SimpleTable() {
+export default function SortFilter() {
   return <Table columns={columns} dataSource={dataSource} />
 }

@@ -5,7 +5,7 @@ import { IconProps } from 'types/icon.d'
 
 const { useCallback, useEffect } = React
 const cacheScript = new Set()
-const url = 'https://at.alicdn.com/t/font_1127944_82mztmm5t8t.js'
+const url = 'https://at.alicdn.com/t/font_1127944_45zi5xei9lf.js'
 
 function Icon(
   { spin = false, prefixCls = 'snake-icon', ...rest }: IconProps,

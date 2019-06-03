@@ -8,7 +8,19 @@ const getColumnsByFixed = array => {
   return groupBy(array, 'fixed')
 }
 
-const checkboxKey = Symbol.for('checkbox')
-const radioKey = Symbol.for('radio')
+function Vnode(value) {
+  this.value = value
+  this.next = null
+}
 
-export { getColumnsByFixed, checkboxKey, radioKey }
+function getFirstNode() {
+  const firstNode = new Vnode('desc')
+  const secondNode = new Vnode('asc')
+  const thirdNode = new Vnode('')
+  firstNode.next = secondNode
+  secondNode.next = thirdNode
+  thirdNode.next = firstNode
+  return firstNode
+}
+
+export { getColumnsByFixed, Vnode, getFirstNode }
