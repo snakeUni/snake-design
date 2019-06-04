@@ -10,6 +10,8 @@ imports:
   import FixedHeaderDemo from './fixedHeader.tsx';
   import FixedColumnDemoCode from '!raw-loader!./fixedColumn.tsx';
   import FixedColumnDemo from './fixedColumn.tsx';
+  import FixedHeaderAndColumnDemoCode from '!raw-loader!./fixedHeaderAndColumn.tsx';
+  import FixedHeaderAndColumnDemo from './fixedHeaderAndColumn.tsx';
 ---
 
 # Table 表格
@@ -53,5 +55,13 @@ imports:
 :::demo
 <Block des="筛选和排序" code={FixedColumnDemoCode}>
   <FixedColumnDemo />
+</Block>
+:::
+
+## 固定表头和列
+
+:::demo
+<Block des="筛选和排序" code={FixedHeaderAndColumnDemoCode}>
+  <FixedHeaderAndColumnDemo />
 </Block>
 :::

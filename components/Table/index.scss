@@ -69,8 +69,6 @@ $table: 'snake-table';
 
   // 滚动模块
   &-scroll {
-    overflow-x: scroll;
-
     table {
       width: auto;
       min-width: 100%;
@@ -86,6 +84,7 @@ $table: 'snake-table';
       left: 0;
       z-index: auto;
       overflow: hidden;
+      box-shadow: 6px 0 6px -4px rgba(0, 0, 0, 0.15);
 
       table {
         background: #fff;
@@ -98,6 +97,7 @@ $table: 'snake-table';
       right: 0;
       z-index: auto;
       overflow: hidden;
+      box-shadow: -6px 0 6px -4px rgba(0, 0, 0, 0.15);
 
       table {
         background: #fff;
@@ -109,6 +109,37 @@ $table: 'snake-table';
     overflow: auto;
     overflow-x: hidden;
     position: relative;
+
+    .#{$table}-scroll {
+      overflow-x: scroll;
+
+      &-header {
+        overflow-x: scroll;
+      }
+
+      &-left {
+        .#{$table}-scroll-body {
+          margin-right: -20px;
+          padding-right: 20px;
+        }
+      }
+    }
+  }
+
+  &-position-left {
+    .#{$table} {
+      &-scroll-left {
+        box-shadow: none;
+      }
+    }
+  }
+
+  &-position-right {
+    .#{$table} {
+      &-scroll-right {
+        box-shadow: none;
+      }
+    }
   }
 }
 

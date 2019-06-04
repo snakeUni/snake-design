@@ -8,7 +8,7 @@ import { getColumnsByFixed } from './util'
 
 import './index.scss'
 
-const { useReducer } = React
+const { useReducer, useRef } = React
 
 const prefixCls = 'snake-table'
 
@@ -36,6 +36,14 @@ export default function Table<T>({
     filters: initialFilters(),
     sortOrder: ''
   })
+
+  const scrollBody = useRef<HTMLDivElement>()
+  const scrollHead = useRef<HTMLDivElement>()
+  const scrollLeft = useRef<HTMLDivElement>()
+  const scrollRight = useRef<HTMLDivElement>()
+  const tablePositionName = useRef<HTMLDivElement>()
+  const lastScrollTop = useRef()
+  const lastScrollLeft = useRef()
 
   const getSortFn = () => {
     const { sortColumn, sortOrder } = state
@@ -123,6 +131,76 @@ export default function Table<T>({
     }
   }
 
+  const getScroll = (fixed: string) => {
+    if (fixed === 'left') {
+      return scrollLeft
+    } else if (fixed === 'right') {
+      return scrollRight
+    }
+    return scrollBody
+  }
+
+  const setPositionClassName = () => {
+    let position = 'left'
+    const scrollLeft = scrollBody.current.scrollLeft === 0
+    const scrollRight =
+      scrollBody.current.scrollLeft + 1 >=
+      scrollBody.current.children[0].getBoundingClientRect().width -
+        scrollBody.current.getBoundingClientRect().width
+    if (scrollLeft && scrollRight) {
+      position = 'both'
+    } else if (scrollLeft) {
+      position = 'left'
+    } else if (scrollRight) {
+      position = 'right'
+    } else {
+      position = 'middle'
+    }
+    tablePositionName.current.className = `${prefixCls}-content ${prefixCls}-position-${position}`
+  }
+
+  const handleBodyScrollTop = (e: React.UIEvent<HTMLDivElement>) => {
+    if (e.currentTarget !== e.target) return
+    const target = e.target
+    const scrollTop = (target as any).scrollTop
+    if (scrollTop !== lastScrollTop.current && scroll.y) {
+      if (scrollLeft.current && target !== scrollLeft.current) {
+        scrollLeft.current.scrollTop = scrollTop
+      }
+      if (scrollRight.current && target !== scrollRight.current) {
+        scrollRight.current.scrollTop = scrollTop
+      }
+      if (scrollBody.current && target !== scrollBody.current) {
+        scrollBody.current.scrollTop = scrollTop
+      }
+    }
+    // 记住位置 防抖动
+    lastScrollTop.current = scrollTop
+  }
+
+  const handleBodyScrollLeft = (e: React.UIEvent<HTMLDivElement>) => {
+    if (e.currentTarget !== e.target) {
+      return
+    }
+    const target = e.target
+    const scrollLeft = (target as any).scrollLeft
+    if (scrollLeft !== lastScrollLeft.current && scroll.x) {
+      if (target === scrollBody.current && scrollHead) {
+        scrollHead.current.scrollLeft = scrollLeft
+      } else if (target === scrollHead.current && scrollBody) {
+        scrollBody.current.scrollLeft = scrollLeft
+      }
+      setPositionClassName()
+    }
+    // 记住位置 防抖动
+    lastScrollLeft.current = scrollLeft
+  }
+
+  const handleBodyScroll = (e: React.UIEvent<HTMLDivElement>) => {
+    handleBodyScrollTop(e)
+    handleBodyScrollLeft(e)
+  }
+
   const renderNormalTable = ({ cloneColumns = columns, hasHead = true, hasBody = true }) => {
     return (
       <>
@@ -133,26 +211,28 @@ export default function Table<T>({
     )
   }
 
-  const renderScrollY = (cloneColumns = columns) => {
+  const renderScrollY = (cloneColumns = columns, fixed = 'noFixed') => {
+    const style: React.CSSProperties = {}
+    // fixed = 'noFixed' 不属于固定列的部分
+    if (fixed === 'noFixed') {
+      style.width = scroll && scroll.x
+    }
     return (
       <div className={`${prefixCls}-scroll`}>
         <div
           className={`${prefixCls}-scroll-header`}
-          style={{
-            width: scroll && scroll.x
-          }}
+          ref={fixed === 'noFixed' ? scrollHead : null}
+          onScroll={fixed === 'noFixed' ? handleBodyScrollLeft : undefined}
         >
-          <table style={{ width: scroll && scroll.x }}>
-            {renderNormalTable({ cloneColumns, hasBody: false })}
-          </table>
+          <table style={style}>{renderNormalTable({ cloneColumns, hasBody: false })}</table>
         </div>
         <div
           className={`${prefixCls}-scroll-body`}
-          style={{ height: scroll && scroll.y, width: scroll && scroll.x }}
+          style={{ height: scroll && scroll.y }}
+          ref={getScroll(fixed)}
+          onScroll={handleBodyScroll}
         >
-          <table style={{ width: scroll && scroll.x }}>
-            {renderNormalTable({ cloneColumns, hasHead: false })}
-          </table>
+          <table style={style}>{renderNormalTable({ cloneColumns, hasHead: false })}</table>
         </div>
       </div>
     )
@@ -165,7 +245,7 @@ export default function Table<T>({
       return (
         <div className={`${prefixCls}-scroll-${fixed}`}>
           {scroll.y ? (
-            renderScrollY(currentColumns)
+            renderScrollY(currentColumns, fixed)
           ) : (
             <table>{renderNormalTable({ cloneColumns: currentColumns })}</table>
           )}
@@ -177,11 +257,11 @@ export default function Table<T>({
 
   const renderScrollX = () => {
     return (
-      <div className={`${prefixCls}-content`}>
+      <div className={`${prefixCls}-content ${prefixCls}-position-left`} ref={tablePositionName}>
         {scroll.y ? (
           renderScrollY()
         ) : (
-          <div className={`${prefixCls}-scroll`}>
+          <div className={`${prefixCls}-scroll`} ref={scrollBody} onScroll={setPositionClassName}>
             <table style={{ width: scroll.x }}>{renderNormalTable({})}</table>
           </div>
         )}
